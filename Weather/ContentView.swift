@@ -9,8 +9,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var input: String = ""
+    
+   @ObservedObject var weatherViewModel = WeatherViewModel()
+    
     var body: some View {
-        Text("Hello, World!")
+        VStack {
+            TextField("Enter city", text: $input, onEditingChanged: { (_) in
+            }, onCommit: {
+                if !self.input.isEmpty {
+                    self.weatherViewModel.fetch(city: self.input)
+                    }
+                })
+                    .font(.title)
+            
+            Divider()
+            
+            Text(weatherViewModel.weatherInfo)
+                .font(.body)
+            } .padding()
     }
 }
 
